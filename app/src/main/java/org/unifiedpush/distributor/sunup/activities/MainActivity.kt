@@ -7,6 +7,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlin.system.exitProcess
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.unifiedpush.android.distributor.ipc.InternalMessenger
 import org.unifiedpush.android.distributor.ipc.subscribeUiActions
 import org.unifiedpush.android.distributor.ui.screen.App
@@ -23,7 +28,11 @@ class MainActivity : ComponentActivity() {
         val messenger = InternalMessenger(this)
         val uiFlow = subscribeUiActions(this)
         val appConfig = SunupAppConfig()
-
+        jobs.removeAll {
+            Log.d(TAG, "Cancelling exitProcess job")
+            it.cancel()
+            true
+        }
         enableEdgeToEdge()
 
         setContent {
@@ -49,6 +58,13 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         Log.d(TAG, "Destroy")
         super.onDestroy()
-        exitProcess(0)
+        jobs += CoroutineScope(Dispatchers.Main + Job()).launch {
+            delay(10_000)
+            exitProcess(0)
+        }
+    }
+
+    companion object {
+        val jobs = emptyList<Job>().toMutableList()
     }
 }
