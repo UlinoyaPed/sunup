@@ -64,3 +64,8 @@ It is possible to configure a few things with build config:
 |------|-------------|---------|
 | DEFAULT_API_URL | Define the API Url used by default | `"https://push.services.mozilla.com"` |
 | URGENCY | To add support for urgency requirement depending on the battery level | `false` until this is supported by the main server |
+
+## Translations
+
+You can contribute to translations on [Weblate](https://translate.codeberg.org/projects/unifiedpush/#components)
+
