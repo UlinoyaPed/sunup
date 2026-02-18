@@ -20,6 +20,9 @@ rootProject.name = "Sunup"
 // includeBuild("../android-distributor") {
 //     dependencySubstitution {
 //         substitute(
+//             module("org.unifiedpush.android:distributor-base")
+//         ).using(project(":distributor_base"))
+//         substitute(
 //                 module("org.unifiedpush.android:distributor")
 //         ).using(project(":distributor"))
 //         substitute(
