@@ -103,13 +103,19 @@ class ServerConnection(private val context: Context, private val releaseLock: ()
         if (message.uaid != store.uaid) {
             Log.d(TAG, "We received a new uaid")
             store.uaid = message.uaid
-            db.listChannelIdVapid().forEach { pair ->
+            db.deleteDisabledApps()
+            val channels = db.listChannelIdVapid()
+            channels.forEach { pair ->
                 ClientMessage.Register(
                     channelID = pair.first,
                     key = pair.second
                 ).send(ws)
             }
-            db.deleteDisabledApps()
+            // We restart the connection now,
+            // as it seems we can't receive notifications from the current connection.
+            if (channels.isNotEmpty()) {
+                ws.close(1000, "New UAID")
+            }
         } else {
             // We remove pending unregistrations
             // and register pending registrations
@@ -165,11 +171,13 @@ class ServerConnection(private val context: Context, private val releaseLock: ()
         code: Int,
         reason: String
     ) {
-        Log.d(TAG, "onClosed: $webSocket")
+        Log.d(TAG, "onClosed: $webSocket ($reason)")
         webSocket.cancel()
         releaseLock()
         if (shouldRestart() && SourceManager.addFail(context, webSocket)) {
-            RestartWorker.run(context, delay = 0)
+            val delay = SourceManager.getTimeout() ?: return
+            Log.d(TAG, "Retrying in $delay ms")
+            RestartWorker.run(context, delay = delay)
         }
     }
 
