@@ -17,7 +17,7 @@ UnifiedPush provider using [Autopush](https://github.com/mozilla-services/autopu
 It is possible to host your own Autopush server. Autopush is designed to work with Google BigTable but it is also possible to use it with redis.
 
 For this:
-1. Clone Autopush ([this fork](https://github.com/p1gp1g/autopush-rs) until redis support has been merged).
+1. Clone [Autopush](https://github.com/mozilla-services/autopush-rs)
 2. Generate Fernet keys:
     1. Set a python virtual env, for instance: `venv .venv && . .venv/bin/activate`
     2. Install cryptography `python -m pip install cryptography`
@@ -64,6 +64,20 @@ It is possible to configure a few things with build config:
 |------|-------------|---------|
 | DEFAULT_API_URL | Define the API Url used by default | `"https://push.services.mozilla.com"` |
 | URGENCY | To add support for urgency requirement depending on the battery level | `false` until this is supported by the main server |
+
+### Debug Websocket connection
+
+To debug the websocket connection with Autopush server, it's possible to use [websocat](https://github.com/vi/websocat)
+
+```console
+$ # Create reverse tcp connection from test device to our pc
+$ adb reverse tcp:8081 tcp:8081
+$ adb reverse tcp:8081 tcp:8081
+$ # MITM the connection, and log messages
+$ websocat -t log:ws-l:127.0.0.1:8081 wss://push.services.mozilla.com/
+```
+
+Then change <app/build.gradle.kts> `DEFAULT_API_URL` to `http://127.0.0.1:8081`.
 
 ## Translations
 
