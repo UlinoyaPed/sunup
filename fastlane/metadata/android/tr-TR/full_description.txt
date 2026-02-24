@@ -1,0 +1,5 @@
+Mozilla'nın push sunucusunu kullananan UnifiedPush dağıtıcısı. 
+
+Bu uygulama UnifiedPush'ı destekleyen uygulamalara anlık bildirimler sağlayan bir hizmettir.
+
+UnifiedPush hakkında daha fazla bilgi için https://unifiedpush.org adresini ziyaret edin.
