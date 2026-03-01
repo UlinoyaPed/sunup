@@ -1,1 +1,1 @@
-مزود UnifiedPush باستخدام خادم دفع Mozilla
+موزّع UnifiedPush باستخدام خادم دفع Mozilla
