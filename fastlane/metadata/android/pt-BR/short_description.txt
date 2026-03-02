@@ -1,1 +1,1 @@
-Provedor de UnifiedPush usando o servidor de push da Mozilla
+Distribuidor de UnifiedPush usando o servidor de push da Mozilla
