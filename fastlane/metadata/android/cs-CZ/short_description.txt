@@ -1,1 +1,1 @@
-Poskytovatel UnifiedPush používající doručovací server organizace Mozilla
+Distributor UnifiedPush používající doručovací server organizace Mozilla

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sunup_privacy_policy">%s varsayılan olarak Mozilla push sunucusunu kullanır ve bu nedenle isteklerin kaynak IP adresine (telefonunuzdan) erişimi vardır.\n\nİlk bağlantı sırasında, uygulama kendini tanımlamak ve oluşturulan push uç noktalarına bağlanmak için sunucuyla paylaşılan benzersiz bir kimlik oluşturur. Bu kimlik, cihaz çevrimdışı iken bildirim almak için yeniden bağlantılar arasında saklanır.\n\nPush sunucusu, kullanılmayan kimlikleri kaldırabilmek için son bağlantı tarihinin kaydını tutar.\n\nMozilla push sunucusu Google tarafından barındırılır ve ABD\'de bulunur.\n\nDaha fazla bilgi için Mozilla Firefox gizlilik politikası --&gt; teknik veriler bölümüne bakın.\n\n</string>
+</resources>

@@ -1,0 +1,1 @@
+Дистрибьютор UnifiedPush, использующий push-сервер Mozilla

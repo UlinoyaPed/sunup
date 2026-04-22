@@ -1,4 +1,4 @@
-UnifiedPushi spetsifikatsiooni järgiv tõuketeadete levitaja, mis kasutab Mozilla serverit.
+UnifiedPushi spetsifikatsiooni järgiv tõuketeadete levitaja, mis kasutab Mozilla tõuketeenuste serverit.
 
 See rakendus võimaldab UnifiedPushi liidestusega klientidel kasutada tõuketeenuseid.
 

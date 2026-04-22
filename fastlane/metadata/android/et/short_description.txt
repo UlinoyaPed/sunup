@@ -1,1 +1,1 @@
-UnifiedPushi teenusepakkuja, mis kasutab Mozilla serverit
+UnifiedPushi levitaja, mis kasutab Mozilla tõuketeenuste serverit
