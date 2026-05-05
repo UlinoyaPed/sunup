@@ -1,6 +1,6 @@
 steps:
     check:
-        image: runmymind/docker-android-sdk:latest
+        image: codeberg.org/s1m/android-sdk-image:latest
         when:
           branch: main
           event: [push, pull_request]
@@ -8,7 +8,7 @@ steps:
           - ./gradlew assembleRelease ktlintCheck --stacktrace
 
     build:
-        image: runmymind/docker-android-sdk:latest
+        image: codeberg.org/s1m/android-sdk-image:latest
         when:
           branch: main
           event: tag
