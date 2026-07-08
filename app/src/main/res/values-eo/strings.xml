@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sunup_privacy_policy">Defaŭlte, %s uzas tuj-sciigan servilon de Mozilla, kiuj tiel povas scii la originan IP-adreson de la petoj (el via poŝtelefono).\n\nDum la unua konekto, la apo generas unikan identigilon, kiun ĝi sendas al la servilo por identigi ĝin kaj ligi ĝin al generitaj finpunktoj de tujaj sciigoj. Ĉi tiu identigilo persistas tra rekonektoj, por ke sciigoj povas esti ricevitaj, dum la aparato ne estas konektita.\n\nLa servilo registras la daton de la lasto konekto, por ebligi forigadon de neuzataj identigilon.\n\nLa servilo de tujaj sciigoj de Mozilla estas provizita de Google, kaj lokiĝas en Usono.\n\nPor pli da informo, vidu la rimarkon de privateco de Mozilla Firefox, “Teknikaj datumoj”.\n\n</string>
 </resources>
