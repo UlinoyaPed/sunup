@@ -74,14 +74,10 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.work.runtime.ktx)
-    implementation(libs.appcompat)
     implementation(libs.okhttp)
-    implementation(libs.androidx.material3.android)
-    implementation(libs.androidx.material.icons.core)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.androidx.ui.tooling.preview.android)
-    implementation(libs.androidx.navigation.compose)
-    debugImplementation(libs.androidx.ui.tooling)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.material3.android)
 }
 
 tasks.register<RunBundletoolTask>("reproduceUniversal") {
