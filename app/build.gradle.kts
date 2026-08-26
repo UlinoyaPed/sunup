@@ -31,7 +31,7 @@ configure<ApplicationExtension> {
     defaultConfig {
         applicationId = "org.unifiedpush.distributor.sunup"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 22
         versionName = "1.3.2"
 
