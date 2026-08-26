@@ -1,0 +1,1 @@
+Distribuilo de UnifiedPush, kiu uzas tuj-sciigan servilon de Mozilla

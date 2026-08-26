@@ -1,0 +1,5 @@
+Distribuilo de UnifiedPush, kiu uzas tuj-sciigan servilon de Mozilla
+
+Ĉi tiu aplikaĵo estas servo por provizi tujan sciigojn al aplikaĵoj, kiuj subtenas sistemon UnifiedPush.
+
+Pli da informo pri UnifiedPush ĉe https://unifiedpush.org .
