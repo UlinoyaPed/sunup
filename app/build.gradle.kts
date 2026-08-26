@@ -1,4 +1,5 @@
 import com.android.SdkConstants
+import com.android.build.api.dsl.ApplicationExtension
 import com.android.repository.Revision
 import com.android.sdklib.BuildToolInfo
 import com.android.tools.build.bundletool.androidtools.Aapt2Command
@@ -13,24 +14,19 @@ import org.gradle.kotlin.dsl.register
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ktlint)
 }
 
-android {
-    compileOptions {
-        targetCompatibility = JavaVersion.VERSION_17
-        sourceCompatibility = JavaVersion.VERSION_17
-    }
+configure<ApplicationExtension> {
     dependenciesInfo {
         // Disables dependency metadata when building APKs and Bundles.
         includeInApk = false
         includeInBundle = false
     }
 
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "org.unifiedpush.distributor.sunup"
@@ -48,6 +44,7 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
+        resValues = true
     }
 
     buildTypes {
