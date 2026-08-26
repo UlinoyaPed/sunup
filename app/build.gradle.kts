@@ -1,5 +1,14 @@
-import RunBundletoolTask.Companion.aapt2
 import com.android.SdkConstants
+import com.android.repository.Revision
+import com.android.sdklib.BuildToolInfo
+import com.android.tools.build.bundletool.androidtools.Aapt2Command
+import com.android.tools.build.bundletool.commands.BuildApksCommand
+import com.android.tools.build.bundletool.model.Password
+import com.android.tools.build.bundletool.model.SigningConfiguration
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.util.Optional as Opt
+import kotlin.apply
 import org.gradle.kotlin.dsl.register
 
 plugins {
@@ -78,18 +87,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
 }
 
-val buildTools = RunBundletoolTask.Companion.BuildTools(
-    SdkConstants.CURRENT_BUILD_TOOLS_VERSION,
-    SdkConstants.FD_BUILD_TOOLS
-)
-
 tasks.register<RunBundletoolTask>("reproduceUniversal") {
     group = "build"
     description = "Generate universal .apks from .aab with bundletool"
     dependsOn("bundleRelease")
     aabFile = project.rootDir.resolve("app/build/outputs/bundle/release/app-release.aab")
     universalApks = project.rootDir.resolve("universal.apks")
-    aapt2 = project.aapt2(androidComponents, buildTools)
     signature.set(RunBundletoolTask.Signature.UnsignedOrDebug)
 }
 
@@ -101,11 +104,122 @@ tasks.register<RunBundletoolTask>("bundletoolBuildApks") {
     aabFile = project.rootDir.resolve(aabPath)
     universalApks = project.rootDir.resolve("universal.apks")
     defaultApks = project.rootDir.resolve("app.apks")
-    aapt2 = project.aapt2(androidComponents, buildTools)
 
     val ks = System.getenv("KS") ?: error("KS not set")
     val ksPass = System.getenv("KS_PASS") ?: error("KS_PASS not set")
     val keyAlias = System.getenv("KEY_ALIAS") ?: error("KEY_ALIAS not set")
 
     signature.set(RunBundletoolTask.Signature.Signed(ks, ksPass, keyAlias))
+}
+
+abstract class RunBundletoolTask : DefaultTask() {
+    abstract class Signature {
+        object UnsignedOrDebug : Signature()
+        data class Signed(
+            val ks: String,
+            val pass: String,
+            val alias: String
+        ) : Signature()
+    }
+
+    @get:InputFile
+    abstract val aabFile: RegularFileProperty
+
+    /**
+     * Output for build with mode=default
+     */
+    @get:Optional
+    @get:OutputFile
+    abstract val defaultApks: RegularFileProperty
+
+    /**
+     * Output for build with mode=universal
+     */
+    @get:Optional
+    @get:OutputFile
+    abstract val universalApks: RegularFileProperty
+
+    @get:Internal
+    abstract val signature: Property<Signature>
+
+    private fun aapt2Path(): Path {
+        val path = if (project.hasProperty("android.aapt2FromMavenOverride")) {
+            project.property("android.aapt2FromMavenOverride") as String
+        } else {
+            val buildToolsVersion = SdkConstants.CURRENT_BUILD_TOOLS_VERSION
+            val buildToolsDir = Paths.get(
+                project.androidComponents.sdkComponents.sdkDirectory.get().toString(),
+                SdkConstants.FD_BUILD_TOOLS,
+                buildToolsVersion
+            )
+            BuildToolInfo.fromStandardDirectoryLayout(
+                Revision.parseRevision(buildToolsVersion),
+                buildToolsDir
+            ).getPath(BuildToolInfo.PathId.AAPT2)
+        }
+        return project.rootDir.resolve(path).toPath()
+    }
+
+    @Suppress("NewApi")
+    @TaskAction
+    fun generateApks() {
+        val aapt2Path = aapt2Path()
+        val aabPath = aabFile.get().asFile.toPath()
+
+        println("➡ Compiling $aabPath")
+        println("➡ Using $aapt2Path")
+
+        val aapt2Command = Aapt2Command.createFromExecutablePath(aapt2Path)
+        val signature = signature.get()
+        val signingConfig = if (signature is Signature.Signed) {
+            SigningConfiguration.extractFromKeystore(
+                Path.of(signature.ks),
+                signature.alias,
+                Opt.of(
+                    Password.createFromStringValue("pass:${signature.pass}")
+                ),
+                Opt.empty<Password>()
+            )
+        } else {
+            null
+        }
+        if (universalApks.isPresent) {
+            val outputFile = universalApks.get().asFile.toPath()
+
+            BuildApksCommand.builder()
+                .setBundlePath(aabFile.get().asFile.toPath())
+                .setOutputFile(outputFile)
+                .setAapt2Command(aapt2Command)
+                .setApkBuildMode(BuildApksCommand.ApkBuildMode.UNIVERSAL)
+                .setOverwriteOutput(true)
+                .apply {
+                    signingConfig?.let {
+                        setSigningConfiguration(it)
+                    }
+                }
+                .build()
+                .execute()
+
+            println("✅ $outputFile generated")
+        }
+        if (defaultApks.isPresent) {
+            val outputFile = defaultApks.get().asFile.toPath()
+
+            BuildApksCommand.builder()
+                .setBundlePath(aabFile.get().asFile.toPath())
+                .setOutputFile(outputFile)
+                .setAapt2Command(aapt2Command)
+                .setApkBuildMode(BuildApksCommand.ApkBuildMode.DEFAULT)
+                .setOverwriteOutput(true)
+                .apply {
+                    signingConfig?.let {
+                        setSigningConfiguration(it)
+                    }
+                }
+                .build()
+                .execute()
+
+            println("✅ $outputFile generated")
+        }
+    }
 }
