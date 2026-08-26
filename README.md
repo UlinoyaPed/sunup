@@ -79,6 +79,15 @@ $ websocat -t log:ws-l:127.0.0.1:8081 wss://push.services.mozilla.com/
 
 Then change <app/build.gradle.kts> `DEFAULT_API_URL` to `http://127.0.0.1:8081`.
 
+### Dependency verification
+
+To update dependency verification:
+`./gradlew --write-verification-metadata pgp,sha256 --export-keys --refresh-keys help`.
+
+If some keys are ignored because they couldn't be fetched,
+remove them from `<ignored-keys>` in <gradle/verification-metadata.xml>,
+and run the previous command again.
+
 ## Translations
 
 You can contribute to translations on [Weblate](https://translate.codeberg.org/projects/unifiedpush/#components)
