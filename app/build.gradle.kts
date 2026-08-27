@@ -32,8 +32,8 @@ configure<ApplicationExtension> {
         applicationId = "org.unifiedpush.distributor.sunup"
         minSdk = 24
         targetSdk = 37
-        versionCode = 22
-        versionName = "1.3.2"
+        versionCode = 23
+        versionName = "1.3.3-rc1"
 
         // buildConfigField("String", "DEFAULT_API_URL", "\"http://10.0.2.2:8088\"")
         buildConfigField("String", "DEFAULT_API_URL", "\"https://push.services.mozilla.com\"")
