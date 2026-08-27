@@ -84,6 +84,7 @@ tasks.register<RunBundletoolTask>("reproduceUniversal") {
     group = "build"
     description = "Generate universal .apks from .aab with bundletool"
     dependsOn("bundleRelease")
+
     aabFile = project.rootDir.resolve("app/build/outputs/bundle/release/app-release.aab")
     universalApks = project.rootDir.resolve("universal.apks")
     signature.set(RunBundletoolTask.Signature.UnsignedOrDebug)
@@ -93,16 +94,23 @@ tasks.register<RunBundletoolTask>("bundletoolBuildApks") {
     group = "build"
     description = "Generate default and universal .apks from .aab with bundletool"
 
-    val aabPath = System.getenv("AAB") ?: error("AAB not set")
+    val aabPath = System.getenv("AAB") ?: "fail later"
     aabFile = project.rootDir.resolve(aabPath)
     universalApks = project.rootDir.resolve("universal.apks")
     defaultApks = project.rootDir.resolve("app.apks")
 
-    val ks = System.getenv("KS") ?: error("KS not set")
-    val ksPass = System.getenv("KS_PASS") ?: error("KS_PASS not set")
-    val keyAlias = System.getenv("KEY_ALIAS") ?: error("KEY_ALIAS not set")
+    val ks = System.getenv("KS") ?: "fail later"
+    val ksPass = System.getenv("KS_PASS") ?: "fail later"
+    val keyAlias = System.getenv("KEY_ALIAS") ?: "fail later"
 
     signature.set(RunBundletoolTask.Signature.Signed(ks, ksPass, keyAlias))
+
+    doFirst {
+        System.getenv("AAB") ?: error("environment var AAB not set")
+        System.getenv("KS") ?: error("environment var KS not set")
+        System.getenv("KS_PASS") ?: error("environment var KS_PASS not set")
+        System.getenv("KEY_ALIAS") ?: error("environment var KEY_ALIAS not set")
+    }
 }
 
 abstract class RunBundletoolTask : DefaultTask() {
