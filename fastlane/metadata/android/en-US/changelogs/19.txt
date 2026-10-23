@@ -1,0 +1,4 @@
+- Use different processes for the UI and the service
+- Refine UI
+- Update ar, ru translations
+

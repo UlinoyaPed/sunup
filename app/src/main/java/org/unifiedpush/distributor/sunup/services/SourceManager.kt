@@ -1,0 +1,29 @@
+package org.unifiedpush.distributor.sunup.services
+
+import android.content.Context
+import okhttp3.Request
+import okhttp3.WebSocket
+import okio.ByteString
+import org.unifiedpush.android.distributor.AppNotification
+import org.unifiedpush.android.distributor.SourceManager as SManager
+import org.unifiedpush.distributor.sunup.utils.DisconnectedNotification
+
+object SourceManager : SManager<WebSocket>() {
+    override val foregroundService = FgService.service
+    override val migrationManager = MigrationManagerImpl()
+
+    override fun disconnectedNotification(context: Context): AppNotification = DisconnectedNotification(context)
+
+    override fun getDummySource(): WebSocket = object : WebSocket {
+        override fun cancel() {}
+        override fun close(code: Int, reason: String?): Boolean = true
+        override fun queueSize(): Long = 0L
+        override fun request(): Request = Request.Builder().build()
+        override fun send(text: String): Boolean = true
+        override fun send(bytes: ByteString): Boolean = true
+    }
+
+    override fun cancelSource(source: WebSocket?) {
+        source?.cancel()
+    }
+}

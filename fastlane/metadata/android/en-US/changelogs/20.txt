@@ -1,0 +1,5 @@
+- Use different processes for the UI and the service
+- Refine UI
+- Fix silent 1min disconnection caused by too many pings
+- Update ar, ru translations
+

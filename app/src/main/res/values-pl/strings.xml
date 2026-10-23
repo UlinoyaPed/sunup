@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sunup_privacy_policy">Domyślnie %s korzysta z serwera push Mozilli, który ma dostęp do adresu IP żądań (z Twojego telefonu).\n\nPodczas pierwszego połączenia aplikacja generuje unikalny identyfikator, który jest przekazywany do serwera w celu identyfikacji aplikacji oraz połączenia jej z wygenerowanymi punktami końcowymi powiadomień push. Identyfikator ten jest zachowywany między ponownymi połączeniami, co pozwala na odbieranie powiadomień, gdy urządzenie jest offline.\n\nSerwer push przechowuje datę ostatniego połączenia, aby móc usunąć nieużywane identyfikatory.\n\nSerwer push Mozilli jest hostowany przez Google i znajduje się w USA\n\nWięcej informacji znajdziesz w polityce prywatności przeglądarki Mozilla Firefox — dane techniczne\n\n</string>
+</resources>

@@ -1,0 +1,3 @@
+- Fix endpoint instability after registration modification
+- Enable memory tagging on device supporting it
+- Add/Update many translations

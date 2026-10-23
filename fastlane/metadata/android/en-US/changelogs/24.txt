@@ -1,0 +1,3 @@
+- Add/Update eo, fr, gl, iw, pl, uk, zh-rCN translations
+- Target SDK 37
+- Bump dependencies
