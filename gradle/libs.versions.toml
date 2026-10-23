@@ -11,8 +11,15 @@ kotlinx_serializationJson = "1.11.0"
 ktlint = "14.2.0"
 okhttp = "5.5.0"
 composeBom = "2026.08.00"
+androidx-navigation = "2.9.8"
+junit = "4.13.2"
+robolectric = "4.16"
 
 [libraries]
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation" }
+androidx-compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activityCompose" }
 androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 # BOM to library version mapping

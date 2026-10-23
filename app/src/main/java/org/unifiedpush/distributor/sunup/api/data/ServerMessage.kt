@@ -97,8 +97,8 @@ sealed class ServerMessage {
     data class Notification(
         val channelID: String,
         val version: String,
-        val data: String?,
-        val headers: HashMap<String, String>?
+        val data: String? = null,
+        val headers: HashMap<String, String>? = null
     ) : ServerMessage()
 
     /**

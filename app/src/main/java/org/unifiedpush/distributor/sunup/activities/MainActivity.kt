@@ -14,7 +14,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.unifiedpush.android.distributor.ipc.InternalMessenger
 import org.unifiedpush.android.distributor.ipc.subscribeUiActions
-import org.unifiedpush.android.distributor.ui.screen.App
 import org.unifiedpush.android.distributor.ui.vm.ThemeViewModel
 import org.unifiedpush.android.distributor.ui.vm.ViewModelFactory
 import org.unifiedpush.distributor.sunup.SunupAppConfig

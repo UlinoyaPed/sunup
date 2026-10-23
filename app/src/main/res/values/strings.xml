@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="sunup_privacy_policy">By default, %s uses Mozilla push server which therefore has access to the origin IP address of the requests (from your phone).\n\nDuring the first connection, the app generates a unique ID shared with the server to identify itself and to be linked to generated push endpoints. This ID is kept across reconnections, to receive notifications while the device is offline.\n\nThe push server keeps a record of the last connection date, to be able to remove unused ID.\n\nMozilla push server is hosted by Google, and located in the USA.\n\nFor more information, see Mozilla Firefox privacy policy - technical data.\n\n</string>
+    <string name="arrival_setting">Show system notification when a push arrives</string>
+    <string name="arrival_channel">App push arrival reminders</string>
+    <string name="arrival_channel_description">Optional reminders when registered apps receive UnifiedPush pushes</string>
+    <string name="arrival_permission_hint">Sunup notifications or this notification channel are disabled. Push delivery continues.</string>
+    <string name="arrival_open_settings">Notification settings</string>
+    <string name="arrival_save_failed">Could not save the push arrival setting. Please try again.</string>
+    <plurals name="arrival_body">
+        <item quantity="one">Received a UnifiedPush push</item>
+        <item quantity="other">Received %d UnifiedPush pushes</item>
+    </plurals>
 </resources>

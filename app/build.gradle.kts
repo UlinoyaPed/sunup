@@ -41,14 +41,29 @@ configure<ApplicationExtension> {
         buildConfigField("Boolean", "SUPPORT_MIGRATIONS", "false")
     }
 
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
+
     buildFeatures {
         compose = true
         buildConfig = true
         resValues = true
     }
 
+    val signingPath = System.getenv("SUNUP_KEYSTORE_PATH")
+    if (!signingPath.isNullOrBlank()) {
+        signingConfigs.create("ciRelease") {
+            storeFile = file(signingPath)
+            storePassword = System.getenv("SUNUP_STORE_PASSWORD") ?: error("Missing SUNUP_STORE_PASSWORD")
+            keyAlias = System.getenv("SUNUP_KEY_ALIAS") ?: error("Missing SUNUP_KEY_ALIAS")
+            keyPassword = System.getenv("SUNUP_KEY_PASSWORD") ?: error("Missing SUNUP_KEY_PASSWORD")
+        }
+    }
+
     buildTypes {
         getByName("release") {
+            if (!signingPath.isNullOrBlank()) signingConfig = signingConfigs.getByName("ciRelease")
             resValue("string", "app_name", "Sunup")
             isMinifyEnabled = true
             isShrinkResources = true
@@ -68,9 +83,13 @@ configure<ApplicationExtension> {
 }
 
 dependencies {
+    testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
     implementation(libs.unifiedpush.distributor)
     implementation(libs.unifiedpush.distributor.base)
     implementation(libs.unifiedpush.distributor.ui)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.work.runtime.ktx)

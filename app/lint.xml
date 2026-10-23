@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lint>
+    <issue id="MissingTranslation">
+        <!-- This feature supplies English and Simplified Chinese; other locales use English. -->
+        <ignore regexp="&quot;arrival_[^&quot;]+&quot; is not translated" />
+        <!-- Existing upstream privacy text also relies on fallback in three locales. -->
+        <ignore regexp="&quot;sunup_privacy_policy&quot; is not translated" />
+    </issue>
+</lint>

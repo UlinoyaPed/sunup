@@ -24,6 +24,7 @@ import org.unifiedpush.distributor.sunup.Distributor
 import org.unifiedpush.distributor.sunup.Distributor.sendMessage
 import org.unifiedpush.distributor.sunup.api.data.ClientMessage
 import org.unifiedpush.distributor.sunup.api.data.ServerMessage
+import org.unifiedpush.distributor.sunup.arrival.PushArrivalNotifier
 import org.unifiedpush.distributor.sunup.callback.NetworkCallbackFactory
 import org.unifiedpush.distributor.sunup.services.FgService
 import org.unifiedpush.distributor.sunup.services.RestartWorker
@@ -128,11 +129,9 @@ class ServerConnection(private val context: Context, private val releaseLock: ()
     }
 
     private fun onNotification(ws: WebSocket, message: ServerMessage.Notification) {
-        sendMessage(
-            context,
-            message.channelID,
-            Base64.decode(message.data, Base64.URL_SAFE)
-        )
+        val payload = message.data?.let { Base64.decode(it, Base64.URL_SAFE) } ?: byteArrayOf()
+        PushArrivalNotifier.enqueue(context, store.apiUrl, store.uaid, message.channelID, message.version)
+        sendMessage(context, message.channelID, payload)
         ClientMessage.Ack(
             arrayOf(ClientMessage.ClientAck(message.channelID, message.version))
         ).send(ws)

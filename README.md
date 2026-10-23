@@ -92,3 +92,9 @@ and run the previous command again.
 
 You can contribute to translations on [Weblate](https://translate.codeberg.org/projects/unifiedpush/#components)
 
+
+## Optional per-application push arrival reminders (this fork)
+
+Registered apps can opt in to an independent Sunup system notification when a
+UnifiedPush push arrives. The feature defaults to off and does not inspect message
+content. See [feature behavior, build/signing instructions and test scope](docs/push-arrival-notifications.md).
