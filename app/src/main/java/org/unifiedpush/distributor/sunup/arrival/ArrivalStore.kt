@@ -4,9 +4,16 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import java.io.Closeable
 
 /** Separate from the library-owned registration schema. No process-local preference cache. */
-class ArrivalStore(context: Context) : SQLiteOpenHelper(context, "push_arrival.db", null, 1) {
+class ArrivalStore(context: Context) :
+    SQLiteOpenHelper(context, "push_arrival.db", null, 1),
+    Closeable {
+    // SQLiteOpenHelper only gained AutoCloseable on newer Android releases.
+    // Explicit Closeable keeps Kotlin use {} valid on our oldest supported API.
+    override fun close() = super.close()
+
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("CREATE TABLE settings (packageName TEXT PRIMARY KEY, enabled INTEGER NOT NULL)")
         db.execSQL(

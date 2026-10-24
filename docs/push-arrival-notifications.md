@@ -54,6 +54,9 @@ These counts are separate from the existing registration delivery counters.
 
 ## Build and GitHub Actions
 
+CI explicitly installs `platform-tools` with command-line tools 13114758, avoiding
+the removed legacy SDK `tools` package.
+
 Use JDK 25, the checked-in Gradle wrapper, Android platform `platforms;android-37.0`
 and SDK build tools (AGP also installs its default build tools 36.0.0).
 
@@ -125,20 +128,23 @@ Before relying on this feature, verify on real devices:
 No connected Android device or real Forkgram/Telegram test account is supplied in
 this environment. These device/network checks remain unverified.
 
-### Local results on 2026-10-23
+### Local results updated on 2026-10-24
 
-- `./gradlew --offline ktlintCheck lintDebug assembleDebug compileDebugUnitTestKotlin`:
-  passed using downloaded/cached dependencies, with normal dependency verification.
-  All test source compiles. Existing upstream lint warnings remain; no lint errors.
-- `testDebugUnitTest`: the two `ArrivalPolicyTest` methods passed. The other three
-  test classes failed during Robolectric initialization because downloading
-  `org.robolectric:android-all-instrumented:13-robolectric-9030017-i7` returned
-  HTTP 503. Their Android behavior assertions have **not** been executed/verified.
-  The fixture and forwarding tests are local simulations even when they run.
-- Debug APK signing verified with `apksigner`; application ID confirmed as
-  `org.unifiedpush.distributor.sunup.debug`, min SDK 24 and target SDK 37.
-- Workflow YAML and XML resources parse successfully. A remote Actions run and
-  the optional signed release job have not been verified in this environment.
+- All 13 local tests pass: 4 storage tests, 6 notification tests (including API 24),
+  2 alert-policy tests and 1 simulated WebSocket forwarding/ACK test. Robolectric
+  runtime downloads are available again. These remain local simulations, not real
+  Autopush/Forkgram end-to-end or real multiprocess/reboot tests.
+- Android 7 testing found that older SQLiteOpenHelper does not implement
+  AutoCloseable. ArrivalStore explicitly implements Closeable so Kotlin `use {}`
+  works on the minimum supported API as well as newer Android releases.
+- Test dependency signing keys are checked in with scoped trust declarations.
+  Existing artifact checksums are preserved; signature verification remains enabled
+  and no signing key is configured to be ignored.
+- Gradle unit tests, Android lint and Debug APK build pass. Existing upstream lint
+  warnings remain; no lint errors. Workflow YAML passes actionlint.
+- The SDK setup fix has passed the corresponding installation steps in GitHub
+  Actions. Full remote CI status should be checked against the latest master run;
+  the optional signed release job still requires the user's signing secrets.
 
 ## Changed file index (relative to imported upstream)
 
@@ -156,7 +162,7 @@ this environment. These device/network checks remain unverified.
 | `app/src/main/res/values/strings.xml`, `values-zh-rCN/strings.xml` | English and Simplified Chinese feature text |
 | `app/src/test/.../ArrivalPolicyTest.kt`, `ArrivalStoreTest.kt`, `PushArrivalNotifierTest.kt`, `PushDeliveryTest.kt` | Policy, storage, system notification and simulated forwarding tests |
 | `app/build.gradle.kts` | Unit-test configuration, existing UI artifact declarations and optional environment-based release signing |
-| `gradle/libs.versions.toml`, `gradle/verification-metadata.xml` | Dependency aliases and checksum metadata; retain upstream verification rules |
+| `gradle/libs.versions.toml`, `gradle/verification-metadata.xml`, `gradle/verification-keyring.keys` | Dependency aliases, checksums and scoped public signing keys; retain verification rules |
 | `app/lint.xml` | Resource-specific missing-translation fallback allowances |
 | `.github/workflows/android.yml` | Automatic checks/Debug artifacts and opt-in signed release build |
 | `.gitignore` | Exclude Kotlin session files and common keystore names |
